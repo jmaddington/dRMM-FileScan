@@ -1,9 +1,9 @@
 <component info="CentraStage Component">
   <general>
-    <name>test</name>
+    <name>File Monitor [WIN]</name>
     <category>scripts</category>
-    <description>test</description>
-    <uid>8c54d077-96e0-4581-acc1-139dfd65fee9</uid>
+    <description>This component monitors all drives, or specific drives, for files. The file filter is user-configurable. If found, it will alert.</description>
+    <uid>68001aac-037a-42c9-89be-12f1545fa1f1</uid>
     <hash />
     <version>4</version>
     <timeout>3600</timeout>
