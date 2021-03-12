@@ -1,13 +1,27 @@
-<component info="CentraStage Component">
+<component info='CentraStage Component'>
   <general>
     <name>File Monitor [WIN]</name>
     <category>scripts</category>
     <description>This component monitors all drives, or specific drives, for files. The file filter is user-configurable. If found, it will alert.</description>
-    <uid>68001aac-037a-42c9-89be-12f1545fa1f1</uid>
-    <hash />
-    <version>4</version>
+    <uid>949fc2af-8a07-45fe-b4b6-055b12f83a74</uid>
+    <hash>f442b5e2e4b424f571c4a6ab78df30fd</hash>
+    <version>5</version>
     <timeout>3600</timeout>
     <securityLevel>1</securityLevel>
     <installType>powershell</installType>
   </general>
+  <variable idx='0'>
+    <name>filter</name>
+    <type>string</type>
+    <direction>false</direction>
+    <description>Comma separated list of file filters to search for. Do not use spaces unless they are part of the filter.</description>
+    <defaultVal />
+  </variable>
+  <variable idx='1'>
+    <name>drive</name>
+    <type>string</type>
+    <direction>false</direction>
+    <description>Drives to scan for filter on. Default is all. Use comma separated drive letters to specify specific drives, such as "c,d". Do not use spaces, colons or backslashes.</description>
+    <defaultVal>all</defaultVal>
+  </variable>
 </component>
