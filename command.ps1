@@ -99,20 +99,48 @@ if ($env:drmm_dump_env_vars -eq "true") {
 If (!($env:test -eq "true")) {
 
     #Get variables
-    $hello_world_var = Get-dRMMVariable -site_variable $env:hello_world_var -script_variable $env:script_hello_world_var -exit_if_missing $false -warning "Hello World value not set, continuing" -default "Hello world!"
+    $filter = Get-dRMMVariable -script_variable $env:filter -exit_if_missing $true -warning "Filter not set, continuing"
+    $drives = Get-dRMMVariable -script_variable $env:drives -exit_if_missing $false -warning "Filter not set, continuing"
 
 } else {
 
     #We're in test mode, manually set variables
-    $hello_world_var = "Hello all y'all!"
+    $drives = "c,d"
+    $filter = "*.vhd*,*.avhd*,*.hrl"
 
 }
 
-# Do things
+if (!($drives -eq "all")) {
+    $drives = $drives.split(",")
+} else {
+    $drives = (Get-PSDrive | Select-Object -ExpandProperty 'Name' | Select-String -Pattern '^[a-z]$')
+}
 
-Write-Output $hello_world_var
+# Do things
+$foundFile = $false
+foreach ($drive in $drives) {
+    
+    $drive = "$drive" + ":\"
+    Write-Output "Scanning $drive for $filter"
+    $filter.Split(",")
+
+    #Search each drive
+    foreach ($file in (Get-ChildItem -Path "$drive" -recurse -File -ErrorAction SilentlyContinue -include $filter.split(","))) {
+
+        Write-Output $file.FullName
+            $diagnostics = $diagnostics + $file.FullName
+            $foundFile = $true
+
+    }
+}
 
 #Exit with success, to exit with failure use $exitcode = 1
-$exitcode = 0
 
-Exit-dRMMScript -exitcode $exitcode -results "Success!" -diagnostics "Additional info here"
+if($foundFile) {
+    $exitcode = 0
+} else {
+    $exitcode = 1
+}
+
+Write-Output $diagnostics
+Exit-dRMMScript -exitcode $exitcode -results "Success!" -diagnostics $diagnostics
